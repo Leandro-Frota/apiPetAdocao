@@ -1,10 +1,9 @@
 import { Router } from "express";
+import { PetController } from "../controllers/PetController.js";
 
 const petRouters = Router()
+const petController = new PetController()
 
-petRouters.get('/',(req,res)=>{
-    console.log('lista de pets enviadas')
-    res.send('lista enviada')
-})
+petRouters.get('/',petController.getPets)
 
 export {petRouters}
