@@ -80,8 +80,7 @@ export class PetController {
         if(getPetDelete){
             return res.status(404).send("Pet not found")
         }
-
-                
+               
         try{
             await prismaClient.pets.delete({
                 where: {id}
