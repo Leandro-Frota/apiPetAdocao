@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Adopter" ALTER COLUMN "phone" SET DATA TYPE VARCHAR(100);
