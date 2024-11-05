@@ -6,5 +6,8 @@ const adoptController = new adoptPetController()
 
 adoptPetRouters.get('/', adoptController.getAdopter )
 adoptPetRouters.post('/', adoptController.registerAdopter )
+adoptPetRouters.get('/:id', adoptController.getAdopterById )
+adoptPetRouters.put('/:id', adoptController.updateAdopter )
+adoptPetRouters.delete('/:id', adoptController.deleteAdopterById )
 
 export {adoptPetRouters}

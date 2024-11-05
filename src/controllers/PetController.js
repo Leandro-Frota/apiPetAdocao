@@ -19,7 +19,7 @@ export class PetController {
                     name,species,dateBorn,description, status
                 }
             });
-            return res.status(201).send("Pet registered succesfully").json(pet);
+            return res.status(201).json({message:"Pet registered succesfully",pet});
         } catch(error){
             return res.status(500).json({error: error.message});
 
@@ -28,21 +28,22 @@ export class PetController {
     async getPetById (req, res){
         const {id} = req.params
 
-        const getPetDelete = await prismaClient.pets.findMany({
-            where: {id}
+        const getPet = await prismaClient.pets.findUnique({
+            where : {id}
         })
-
-        if(getPetDelete){
-            return res.status(404).send("Pet not found")
+        if (!getPet) {
+            return res.status(404).send('Pet not found'); // Retorna 404 se o pet não for encontrado
         }
-
+       
         try{
-            const pet = await prismaClient.pets.findMany({
+            const pet = await prismaClient.pets.findUnique({
                 where : {id}
             })
-            return res.status(500).json(pet)
-        }catch(error){  
-            return res.status(500).json({error: error.message});
+           
+            return res.status(200).json(pet)
+        }catch(error){ 
+            console.error(error) 
+            return res.status(500).json({ error:error.message});
 
         }
     }
@@ -50,15 +51,15 @@ export class PetController {
         const {id} = req.params
         const{name,species,dateBorn,description, status} = req.body
 
-        const getPetDelete = await prismaClient.pets.findMany({
-            where: {id}
+        const getPet = await prismaClient.pets.findUnique({
+            where : {id}
         })
-
-        if(getPetDelete){
-            return res.status(404).send("Pet not found")
+        if (!getPet) {
+            return res.status(404).send('Pet not found'); // Retorna 404 se o pet não for encontrado
         }
 
         try{
+           
             const pet = await prismaClient.pets.update({
                 data:{
                     name,species,dateBorn,description, status
@@ -66,6 +67,7 @@ export class PetController {
                 where:{id}
 
             })
+          
             return res.status(200).send("Pet update succesfully").json(pet)
         }catch(error){
             return res.status(500).json({error: error.message});
@@ -73,11 +75,11 @@ export class PetController {
     }
     async deletePet (req,res){
         const {id} = req.params
-        const getPetDelete = await prismaClient.pets.findMany({
+        const getPet = await prismaClient.pets.findUnique({
             where: {id}
         })
 
-        if(getPetDelete){
+        if(getPet){
             return res.status(404).send("Pet not found")
         }
                
