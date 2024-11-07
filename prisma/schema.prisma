@@ -32,7 +32,7 @@ model AdoptionProcess{
    id           String @id @default(uuid())
    pet_id       String 
    adopter_id   String
-   data_adocao  DateTime @db.Date
+   data_adocao  DateTime @default(now())
    pets          Pets     @relation(fields: [pet_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_pet")
    Adopter      Adopter   @relation(fields: [adopter_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_adopter")
 }

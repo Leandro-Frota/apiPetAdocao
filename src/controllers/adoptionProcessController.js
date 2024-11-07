@@ -12,12 +12,23 @@ async getProcessAdopt(req,res){
 }
 async registerAdoptionProcess(req,res){
      const {pet_id ,adopter_id,data_adocao} = req.body
+     const newStatus = "adotado"
+
+     const getPet = await prismaClient.pets.findUnique({
+          where:{id:pet_id}
+
+     })
+
+     if(getPet.status==="adotado"){
+          console.log(getPet.status)
+          return res.status(402).send("Pet já adotado")
+     }
     
      try{
           await prismaClient.adoptionProcess.create({
                data: {pet_id,adopter_id,data_adocao}
           })
-           const newStatus = "adotado"
+          
           await prismaClient.pets.update({
                data:{status:newStatus},
                where:{id:pet_id}

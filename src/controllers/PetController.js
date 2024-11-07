@@ -2,13 +2,24 @@ import { prismaClient } from "../database/PrismaClient.js";
 
 export class PetController {
     async getPets (req,res){
-       try{
-            const pets = await prismaClient.pets.findMany()
-            return res.status(200).json(pets)
-       }catch(error){
-            return res.status(500).json({error: error.message})
+        const {status} = req.query
 
-       }
+        try{
+            const pets = await prismaClient.pets.findMany({
+                where : status ? { status } : {} 
+                
+            })
+
+             if (pets.length ===0) {
+            return res.status(404).send('Pet not found'); // Retorna 404 se o pet não for encontrado
+        }      
+           
+            return res.status(200).json(pets)
+        }catch(error){ 
+            console.error(error) 
+            return res.status(500).json({ error:error.message});
+
+        }
     }
     async registerPet(req,res) {
         const {name,species,dateBorn,description, status} = req.body
@@ -68,7 +79,7 @@ export class PetController {
 
             })
           
-            return res.status(200).send("Pet update succesfully").json(pet)
+            return res.status(200).send("Pet update succesfully")
         }catch(error){
             return res.status(500).json({error: error.message});
         }
@@ -92,5 +103,5 @@ export class PetController {
             return res.status(500).json({ error: error.message });
         }
     }
-
+   
 }

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "AdoptionProcess" ALTER COLUMN "data_adocao" SET DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "data_adocao" SET DATA TYPE TIMESTAMP(3);
