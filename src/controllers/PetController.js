@@ -2,11 +2,13 @@ import { prismaClient } from "../database/PrismaClient.js";
 
 export class PetController {
     async getPets (req,res){
-        const {status} = req.query
+        const {status,species} = req.query
+        
 
         try{
             const pets = await prismaClient.pets.findMany({
-                where : status ? { status } : {} 
+                where : status ? { status } : {},
+                
                 
             })
 
@@ -23,11 +25,17 @@ export class PetController {
     }
     async registerPet(req,res) {
         const {name,species,dateBorn,description, status} = req.body
+        const dateNow = new Date()
+        const born = new Date(dateBorn)
+
+        const ageNow = Math.floor((dateNow - born) / (1000 * 60 * 60 * 24 * 30.44));
+
+        
 
         try{
             const pet = await prismaClient.pets.create({
                 data:{
-                    name,species,dateBorn,description, status
+                    name,species,dateBorn,description, status,age:ageNow
                 }
             });
             return res.status(201).json({message:"Pet registered succesfully",pet});

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Pets" ADD COLUMN     "age" INTEGER NOT NULL DEFAULT 0;
