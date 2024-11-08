@@ -2,15 +2,26 @@ import { prismaClient } from "../database/PrismaClient.js";
 
 export class PetController {
     async getPets (req,res){
-        const {status,species} = req.query
+        const {status,species,ageMin,ageMax} = req.query
         
 
         try{
             const pets = await prismaClient.pets.findMany({
-                where : status ? { status } : {},
-                
-                
-            })
+                where : {
+                    AND:[
+                         status? {status:status} : null,
+                         species? {species:species} : null,
+                         (ageMin&&ageMax)?{age:{gte:parseInt(ageMin),lte:parseInt(ageMax)}}:null
+                        
+                        ].filter(condition => condition !== null)},
+                select:{
+                    name:true,
+                    species:true,
+                    age:true,
+                    description:true
+                }
+            })        
+        
 
              if (pets.length ===0) {
             return res.status(404).send('Pet not found'); // Retorna 404 se o pet não for encontrado
