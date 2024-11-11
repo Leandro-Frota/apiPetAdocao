@@ -23,8 +23,7 @@ Esse projeto acadêmico foi promovido pelo Bootcamp de desenvolvimento Full Stac
 - Gerenciamento de Adotantes
 - Processo de Adoção
 - Visualização de Pets Disponíveis
-- Filtro Avançado (Opcional):Tamanho, personalidade
-- Autenticação
+
 
 ## Tecnologias Utilizadas
 
