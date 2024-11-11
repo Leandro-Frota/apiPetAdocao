@@ -83,19 +83,22 @@ async registerAdoptionProcess(req,res){
      }
      async deleteAdoptionProcess(req,res){
           const {id} = req.params
+          const newStatus = "disponivel"
           
           const getProcessAdopt = await prismaClient.adoptionProcess.findUnique({
                where:{id}
           })
-
           if(!getProcessAdopt){
                return res.status(404).send("Adoption process not found")
-
           }
 
           try{
                await prismaClient.adoptionProcess.delete({
                     where:{id}
+               })          
+               await prismaClient.pets.update({
+                    data:{status:newStatus},
+                    where:{id:pet_id}
                })
                return res.status(200).send("Adoption deleted")
           }catch(error){
