@@ -1,0 +1,2 @@
+-- CreateEnum
+CREATE TYPE "usuario_perfil" AS ENUM ('ADMINISTRADORES', 'ADOTANTES', 'FUNCIONARIOS');
