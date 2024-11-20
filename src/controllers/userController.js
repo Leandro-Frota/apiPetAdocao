@@ -1,4 +1,5 @@
 import { prismaClient } from "../database/PrismaClient.js";
+import bcrypt from "bcryptjs"
 
 
 export class UserController {
@@ -6,8 +7,9 @@ export class UserController {
         const{name,email,phone,password,profile} = req.body
 
       try{
+        const passwordHash = bcrypt.hashSync(password,10)
         const user = await prismaClient.user.create({
-           data:{ name,email,phone,password,profile}
+           data:{ name,email,phone,password:passwordHash,profile}
         })
         return res.status(200).send(user)
       } catch(error){
