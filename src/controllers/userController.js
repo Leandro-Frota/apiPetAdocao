@@ -14,7 +14,8 @@ export class UserController {
       try{
         const passwordHash = bcrypt.hashSync(password,10)
         const user = await prismaClient.user.create({
-           data:{ name,email,phone,password:passwordHash,profile}
+           data:{ name,email,phone,password:passwordHash,profile},
+           select:{name:true,email:true,phone:true,profile:true}
           
         })
         return res.status(200).send(user)

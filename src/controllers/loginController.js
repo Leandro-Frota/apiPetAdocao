@@ -1,5 +1,6 @@
 import { prismaClient } from "../database/PrismaClient.js"
 import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
 
 
 export class LoginController{
@@ -18,10 +19,14 @@ export class LoginController{
 
             if(!passwordValid){
 
-                return res.statu(401).json({error: "Usuario invalido"})
+                return res.status(401).json({error: "Usuario ou senha inválido"})
 
             }
-            return res.status(200).send("Usuario login ok")
+
+            const payload = {id: user.id, name: user.name, perfil: user.profile}
+            const token = jwt.sign(payload,process.env.SECRET_JWT,{expiresIn:'2h'})
+
+            return res.status(200).json({data:payload, token:token})
         }catch(error){
 
             return res.status(500).json({error: error.message})
