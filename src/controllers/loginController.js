@@ -6,6 +6,8 @@ import jwt from "jsonwebtoken"
 export class LoginController{
     async login (req,res){
         const {email,password} = req.body
+        const dateCurrentLogin = new Date().toLocaleString()
+        console.log(dateCurrent)
 
         try{
             const user = await prismaClient.user.findFirst({
@@ -26,7 +28,7 @@ export class LoginController{
             const payload = {id: user.id, name: user.name, profile: user.profile}
             const token = jwt.sign(payload,process.env.SECRET_JWT,{expiresIn:'2h'})
 
-            return res.status(200).json({data:payload, token:token})
+            return res.status(200).json({data:payload,dateCurrentLogin, token:token})
         }catch(error){
 
             return res.status(500).json({error: error.message})

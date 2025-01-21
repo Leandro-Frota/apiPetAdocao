@@ -1,4 +1,12 @@
 import { prismaClient } from "../database/PrismaClient.js";
+import Joi from "joi";
+
+const adopterSchema = Joi.object({
+    name: Joi.string().min(3).required(),
+    email: Joi.string().email().required(),
+    phone: Joi.string().min(8).required(),
+    address: Joi.string().required()
+})
 
 export class adoptPetController {
     async getAdopter(req,res){
@@ -14,6 +22,12 @@ export class adoptPetController {
         const {name, email, phone, address} = req.body
              
         try{
+            const {error} = adopterSchema.validate({name, email, phone, address})
+
+            if(error){
+                return res.status(400).json({error: error.details[0].message})
+            }
+
             const adopter = await prismaClient.adopter.create({
                 data:{
                     name, email, phone, address
