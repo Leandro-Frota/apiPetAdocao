@@ -1,5 +1,7 @@
 import { prismaClient } from "../database/PrismaClient.js";
 
+
+
 export class AdoptionProcessController{
 async getProcessAdopt(req,res){
      try{

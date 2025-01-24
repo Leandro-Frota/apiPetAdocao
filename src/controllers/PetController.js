@@ -35,6 +35,11 @@ export class PetController {
     }
     async registerPet(req,res) {
         const {name,species,dateBorn,description, status} = req.body
+
+        if (!dateBorn || isNaN(new Date(dateBorn).getTime())) {
+            return res.status(400).json({ error: "Invalid or missing dateBorn. Use ISO-8601 format (e.g., 2025-01-01)." });
+        }
+
         const dateNow = new Date()
         const born = new Date(dateBorn)
 
@@ -44,7 +49,7 @@ export class PetController {
         try{
             const pet = await prismaClient.pets.create({
                 data:{
-                    name,species,dateBorn,description, status,age:ageNow
+                    name,species,dateBorn:born,description, status,age:ageNow
                 }
             });
             return res.status(201).json({message:"Pet registered succesfully",pet});
@@ -95,7 +100,7 @@ export class PetController {
         try{           
             const pet = await prismaClient.pets.update({
                 data:{
-                    name,species,dateBorn,description, status,age:ageNow
+                    name,species,dateBorn:born,description, status,age:ageNow
                 },
                 where:{id}
             })          

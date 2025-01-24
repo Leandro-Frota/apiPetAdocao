@@ -6,9 +6,9 @@ const adoptPetRouters = Router()
 const adoptController = new adoptPetController()
 
 adoptPetRouters.get('/', verifyAutentication, adoptController.getAdopter )
-adoptPetRouters.post('/',verifyPermission(['EMPLOYEE']), adoptController.registerAdopter )
-adoptPetRouters.get('/:id', adoptController.getAdopterById )
-adoptPetRouters.put('/:id', adoptController.updateAdopter )
-adoptPetRouters.delete('/:id', adoptController.deleteAdopterById )
+adoptPetRouters.post('/',verifyPermission(['EMPLOYEE','MANAGER']), adoptController.registerAdopter )
+adoptPetRouters.get('/:id',verifyAutentication, adoptController.getAdopterById )
+adoptPetRouters.put('/:id',verifyPermission(['EMPLOYEE','MANAGER']), adoptController.updateAdopter )
+adoptPetRouters.delete('/:id',verifyPermission(['EMPLOYEE','MANAGER']), adoptController.deleteAdopterById )
 
 export {adoptPetRouters}

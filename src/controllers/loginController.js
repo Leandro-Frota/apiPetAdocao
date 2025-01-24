@@ -7,7 +7,7 @@ export class LoginController{
     async login (req,res){
         const {email,password} = req.body
         const dateCurrentLogin = new Date().toLocaleString()
-        console.log(dateCurrent)
+        // console.log(dateCurrent)
 
         try{
             const user = await prismaClient.user.findFirst({
